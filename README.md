@@ -1,0 +1,170 @@
+__golem__ is a project to rethink interaction with the computer.
+
+
+thesis: It's time to restart how we use a computer. GUIs are, as
+conceived and operated, a disaster. The Bash shell is marginal. Fish,
+not much better. The Web 1.0, 2.0, 3.0, and so forth, are a cobbled
+together train, and the duct tape falls off regularly. Mobile is under
+the control of corporations with varying amounts of cackle, and with
+perverse incentives to snoop, advertise, and mangle our ability to
+operate. Server software is opaque, failures are fixed by restarting
+the computer... the litany goes on.
+
+On the software creation side, the story is better; actual designers
+are involved, and the profit motive to distort the systems against the
+users are much smaller. However, a few pot shots are in order. C, C++,
+and Java are all of a piece: error-prone, with disastrous
+consequences. Haskell is practically unusable: imperative mutating IO
+is a feature. Scala is a baroque sculpture of creeping features, all
+arguing with each other.. Rust offers a glimmer of hope, but the
+salvific effects of the type checker demand a steep penance. Python,
+Perl, and Ruby are a novel way to learn about production type errors
+and worse, Ruby and Python glory in their lack of theoretical
+grounding: they will never improve. Javascript is the COBOL of the
+future: common, unreadable, but this time, particularly error
+prone. Common Lisp faded 30 years ago, and often is simply antique,
+though still solid. Shame about that type error though...  Clojure
+purports to be a Lisp, but remains a skin on Java, despite its best
+marketing efforts. Go is another retry on C: now with easy pointer
+errors with threading. You didn't want abstraction, did you?  Go won't
+give it.  Other languages simply don't have the mindshare to actually
+contribute. Shame.
+
+System administration is forked into two camps: Windows and
+Linux. Windows is approximately 15 years behind Linux administration,
+since it tries to integrate tools for IT as well as be an operating
+system.  Linux suffers the CADT syndrome, and recently totalized on
+the famous systemd as a core component, being a completely pointless
+replacement for the well-understood and reliable SysV init. Other
+components such as X, Gnome, and KDE also have their cores being
+rewritten and replaced. Pity that the old thing worked, time to get a
+new not-debugged-yet thing. Linux also has as many configuraton
+management tools as there are bored software engineers in SRE
+teams. Did someone ask about OSX and BSD? Sorry, they are respectively
+"Glossy iPhone Build Machines" and "hasn't been promoted by a fad tech
+company yet". Linux has an incredible packaging system. It has 4
+incredible packaging systems. They are, incredibly, incompatible,
+ill-specced, convoluted, and, in the final analysis, incredibly
+WAT. The salvation of packaging lies in the Nix package manager, which
+doesn't delete anything, and packages have versions such as
+0xdeadbeefbet4b054. Obviously. What's YOUR problem with that?
+
+Let's not talk about 'containers', 'source control', or other fine
+points of the best that computer users have come with. The story
+rhymes there, and the chorus goes like this:
+
+The software world is broken. Fundamentally, possibly irretrievably,
+kaput.
+
+And, it's the fault of the decentralized nature of the different
+central designers all arguing (and designing twelve separate
+standards) furiously while the implementors implement like madmen (or
+women, since it's 2015), since they are running on Internet Time, and
+really would like a paycheck before their company goes under. Free,
+libre, open source have the same problem, but the number of designers
+is an order of magnitude more, and they got bored before they fixed
+their problems. What was I saying?
+
+Ah, yes, broken. Things don't work well; they work via duct tape and
+copious frustration. Yes, even that gem of a system you use. It went
+to pieces a year after it was made, and has never been quite right
+since. And the maintainers probably got drunk on a Friday and made the
+changes they wanted to see in the world...
+
+You may email your hatemail to circular-bin@example.com. I welcome it.
+
+
+---
+
+We can't fix everything at once. Thirty years of Worse is Better,
+Microsoft, and the Web aren't going away overnight. They are too
+profitable; too integrated, and too *useful*.
+
+
+We can't fix the sysadmin problem directly: significant vested
+interests exist to keep the current problem spinning along.
+
+We shouldn't write a new programming language to make this new better
+world. That takes far too long: usually a decade to start making a
+successful language. Many very talented people are chasing that
+problem. Some interesting angles here are Red, Nim, and Rust. Common
+Lisp is not bad either.
+
+We can, however, begin knocking on the problem with our local
+desktops, the central place of power for nerds. Let's start taking
+stock of, and starting building a good place for ourselves here.
+
+---
+
+I'm writing this project for people like me: strongly textually
+oriented; command-line preferring; emacs/vi users. Our computers are
+remarkably sophisticated, yet we tend to use them as dumb appliances,
+outside of the programs we ourselves write.
+
+__golem__ represents a software vision that is paradigmatically
+shifted from what we have used our computers as. __golem__ is *like* a
+command shell, but is an extensible independent agent that does work
+for us, as opposed to a dumb console. No, I don't mean that it's a
+bash shell on steroids. We call that zsh.
+
+__golem__ is a *bicycle* for the tasks of the mind. It's not a
+personal assistant. It's not a speech to text tool. Its sole *design*
+goal is to:
+
+#. unwind the clock to (about) 1975
+#. move in a Text Centric direction
+#. seek to make the computer compute for us in ways that are
+  #. loosely coupled
+  #. useful
+  #. couple-able and recombinable.
+
+
+
+
+Let's look at how we'd start to use this...
+
+```
+golem view url -> see url in browser
+
+golem record url at timestamp -> the url is recorded at a timestamp.
+
+golem sample url at interval 5s -> the url is sampled every 5 seconds.
+
+golem remind me in 5 minutes to check the tea -> an alert pings in 5 minutes 'check the tea'
+
+golem play Music/folder/folder -> golem creates a playlist from contents of the folder and plays it.
+
+golem ddg query -> duckduckgo Instant Answer in the terminal
+
+golem find filename -> finds all of filename
+
+golem search contents -> finds all files with contents.
+```
+
+What we see here is a typical parser; each *class* of actions is
+digested into a command sequence for a typical command-line tool. This
+conforms to a plugin architecture: a plugin has the parse information,
+combined with the structure to invoke the tool.
+
+Note, however, that this still lies in the restrictive question-answer
+format. However, we control the golem. The golem can pipe
+simultaneously to a file, as well as standard out/err (-f <foo>). Of
+course, the golem can be launched as a daemon on its task (-d), which
+will run as a no-hup task to completion.  Even so: the astute reader
+knows that these tasks are still in the realm of bash (fiddly though
+it may be).
+
+
+**golem** will, in addition, allow chaining of actions based upon
+prior standard output, using the conventional '-' flag.
+
+`golem find filename | grep '^foo' | golem ddg '-'`
+
+
+**golem** will also incorporate a dataflow extension to Common Lisp,
+allowing invoking programs and properly handling the different
+conditions the text streams output will require; something that
+usually demands rewriting the script into Perl otherwise.
+
+
+golem exec '(.> (golem search contents) (map curl "http://stuff/$_")'
