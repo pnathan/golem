@@ -1,7 +1,11 @@
-__golem__ is a project to rethink interaction with the computer.
+GOLEM
+
+* WHY BOTHER
+
+*golem* is a project to rethink interaction with the computer.
 
 
-thesis: It's time to restart how we use a computer. GUIs are, as
+/thesis/:  It's time to restart how we use a computer. GUIs are, as
 conceived and operated, a disaster. The Bash shell is marginal. Fish,
 not much better. The Web 1.0, 2.0, 3.0, and so forth, are a cobbled
 together train, and the duct tape falls off regularly. Mobile is under
@@ -74,7 +78,9 @@ changes they wanted to see in the world...
 You may email your hatemail to circular-bin@example.com. I welcome it.
 
 
----
+-----
+
+* WAT DO?
 
 We can't fix everything at once. Thirty years of Worse is Better,
 Microsoft, and the Web aren't going away overnight. They are too
@@ -94,36 +100,38 @@ We can, however, begin knocking on the problem with our local
 desktops, the central place of power for nerds. Let's start taking
 stock of, and starting building a good place for ourselves here.
 
----
+------
 
 I'm writing this project for people like me: strongly textually
 oriented; command-line preferring; emacs/vi users. Our computers are
 remarkably sophisticated, yet we tend to use them as dumb appliances,
 outside of the programs we ourselves write.
 
-__golem__ represents a software vision that is paradigmatically
-shifted from what we have used our computers as. __golem__ is *like* a
+*golem* represents a software vision that is paradigmatically
+shifted from what we have used our computers as. *golem* is /like/ a
 command shell, but is an extensible independent agent that does work
 for us, as opposed to a dumb console. No, I don't mean that it's a
 bash shell on steroids. We call that zsh.
 
-__golem__ is a *bicycle* for the tasks of the mind. It's not a
-personal assistant. It's not a speech to text tool. Its sole *design*
+*golem* is a /bicycle/ for the tasks of the mind. It's not a
+personal assistant. It's not a speech to text tool. Its sole /design/
 goal is to:
 
-#. unwind the clock to (about) 1975
-#. move in a Text Centric direction
-#. seek to make the computer compute for us in ways that are
-  #. loosely coupled
-  #. useful
-  #. couple-able and recombinable.
+- unwind the clock to (about) 1975
+- move in a Text Centric direction
+- seek to make the computer compute for us in ways that are
+  - loosely coupled
+  - useful
+  - couple-able and recombinable.
 
 
 
+* examples
 
 Let's look at how we'd start to use this...
 
-```
+=
+
 golem view url -> see url in browser
 
 golem record url at timestamp -> the url is recorded at a timestamp.
@@ -139,7 +147,8 @@ golem ddg query -> duckduckgo Instant Answer in the terminal
 golem find filename -> finds all of filename
 
 golem search contents -> finds all files with contents.
-```
+
+
 
 What we see here is a typical parser; each *class* of actions is
 digested into a command sequence for a typical command-line tool. This
@@ -155,16 +164,29 @@ knows that these tasks are still in the realm of bash (fiddly though
 it may be).
 
 
-**golem** will, in addition, allow chaining of actions based upon
+
+*golem* will, in addition, allow chaining of actions based upon
 prior standard output, using the conventional '-' flag.
 
 `golem find filename | grep '^foo' | golem ddg '-'`
 
 
-**golem** will also incorporate a dataflow extension to Common Lisp,
+*golem* will also incorporate a dataflow extension to Common Lisp,
 allowing invoking programs and properly handling the different
 conditions the text streams output will require; something that
 usually demands rewriting the script into Perl otherwise.
 
+Conceptually this might look like this:
 
-golem exec '(.> (golem search contents) (map curl "http://stuff/$_")'
+(.> (generator) (multipipe 'out-function 'err-function))
+
+
+* closing remarks
+
+*golem* is a project without a well-defined end: it is begun in the
+hopes that the computer might start fulfilling its promise of being a
+true power tool, not an appliance.
+
+
+As such, *golem* is licenced under the AGPL3, in the likely-vain hope
+that it will be used, shared, and improved upon.
