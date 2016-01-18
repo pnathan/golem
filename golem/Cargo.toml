@@ -1,0 +1,9 @@
+[package]
+name = "golem"
+version = "0.1.0"
+authors = ["Paul Nathan <pnathan@alumni.uidaho.edu>"]
+
+[dependencies]
+
+argparse = "*"
+rustc-serialize = "0.3"
