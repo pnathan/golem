@@ -1,0 +1,31 @@
+search
+
+many uses of computers involve /search/. Search on modern desktops
+involves two questions: what is the file named, and what is the file
+containing.
+
+golem will perform text-based search for both:
+
+golem find name /filename/
+
+golem find content /content/
+
+(the content of a directory are the files in the directory)
+
+golem will boost to the usual second level: hand-crafted metadata
+
+golem will allow tagging and searching by tag:
+
+golem tag /filename/ tagstring
+
+golem find tag /tagstring/
+
+On a more exotic capability set:
+
+golem will allow /assocations/ between files and searching the
+associations. A file can be defined to be /associated/ with other
+files.
+
+golem will allow textual similarity searches between file content. A
+similarity search on a file will return a % similarity between its
+content and other files.

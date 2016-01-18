@@ -1,0 +1,27 @@
+format
+
+an important part of golem is the ability for one golem plugin to
+communicate with another golem plugin.
+
+this ipso facto demands a communication format.
+
+...This document is not finished... it is probably not adequate.
+
+two kinds of communication are discernable: streaming and bulk.
+
+Key pieces of information for a record packet are:
+
+- generating program
+- data
+- datatype
+- data /streamclass/
+
+it's important to distinguish between classes of data: a data can be
+normal output, error output, exceptional output, or various numbers of
+the same. golem uses the /streamclass/ to describe this
+difference. Initial streamclasses are:
+
+- stdout
+- stderr
+
+Others are likely to arise based on application-specific needs.
