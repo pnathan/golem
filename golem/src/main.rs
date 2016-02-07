@@ -1,10 +1,12 @@
 extern crate argparse;
+extern crate glob;
 extern crate rustc_serialize;
 
 use argparse::{ArgumentParser,
                Collect,
                Store,
                StoreTrue};
+use glob::glob;
 use rustc_serialize::json;
 use std::env;
 use std::io::{self, Read};
@@ -18,7 +20,15 @@ pub struct GolemResult  {
     code: i32
 }
 
+fn get_home_directory() -> String  {
+    match env::home_dir() {
+        Some(result) => result,
+        None => panic!("Impossible to get your home dir!")
+    }.to_str().unwrap().to_string()
+}
+
 fn main() {
+    let home_dir : String = get_home_directory();
     let mut commands : Vec<String>= Vec::new();
     let mut daemon = false;
     let mut filename = "".to_string();
@@ -63,17 +73,48 @@ fn main() {
     }
 
     let commands = commands;
+    if commands.len() == 0 {
+        println!("How about --help, o my master?");
+        return;
+    }
+
     let (first, args) = commands.split_first().unwrap();
+
+    // special case
+    if first == "help" {
+        let stuff : String = home_dir.clone() + "/.golem/*";
+        println!("golem: wizard's assistant");
+        println!("golem knows the following spells - ");
+        for entry in glob(&stuff).unwrap() {
+            match entry {
+                Ok(path) => {
+                    if path.is_dir() { continue; }
+                    let path : String = format!("{:?}", path.file_name().unwrap())
+                        .trim_matches('"').to_string();
+                    if ! (path.ends_with("~") ||
+                          path.starts_with(".")) {
+                        println!(" {}", path)
+                    }
+                },
+
+                // if the path matched but was unreadable,
+                // thereby preventing its contents from matching
+                Err(e) => println!("{:?}", e),
+            }
+        }
+
+        println!("in a properly functioning golem system, the `meta` spell is functional: pass it --help for syntactical concerns");
+
+        // EARLY EXIT
+        return;
+
+    }
+
     let mut cmd = "~/.golem/".to_string() + first;
 
     if cmd.contains("~") {
-        let dir = match env::home_dir() {
-            Some(result) => { result },
-            None => panic!("Impossible to get your home dir!")
-        };
 
-
-        cmd = cmd.replace("~", dir.to_str().unwrap());
+        cmd = cmd.replace("~", &home_dir);
 
     }
 
@@ -85,11 +126,12 @@ fn main() {
         let mut buffer = String::new();
         match io::stdin().read_to_string(&mut buffer) {
             Ok(result) => result,
-            Error => 10
+            _ => 10
         };
         // fuss with something something something.
         // rust process api not all there yet.
     }
+
 
     let output = Command::new(cmd)
         .args(&args)

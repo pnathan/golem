@@ -5,5 +5,6 @@ authors = ["Paul Nathan <pnathan@alumni.uidaho.edu>"]
 
 [dependencies]
 
-argparse = "*"
+argparse = "0.2"
 rustc-serialize = "0.3"
+glob = "0.2"
