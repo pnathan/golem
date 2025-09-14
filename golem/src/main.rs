@@ -1,20 +1,19 @@
+#[macro_use]
+extern crate serde_derive;
 extern crate argparse;
 extern crate glob;
-extern crate rustc_serialize;
+extern crate serde;
+extern crate serde_json;
 
-use argparse::{ArgumentParser,
-               Collect,
-               Store,
-               StoreTrue};
+use argparse::{ArgumentParser, Collect, Store, StoreTrue};
 use glob::glob;
-use rustc_serialize::json;
 use std::env;
 use std::io::{self, Read};
 use std::io::Write;
 use std::process::Command;
 
-#[derive(RustcDecodable, RustcEncodable)]
-pub struct GolemResult  {
+#[derive(Serialize, Deserialize)]
+pub struct GolemResult {
     stdout: String,
     stderr: String,
     code: i32
@@ -134,7 +133,7 @@ fn main() {
 
 
     let output = Command::new(cmd)
-        .args(&args)
+        .args(&*args)
         .output()
         .unwrap_or_else(|e| {
             panic!("failed to execute process: {}", e)
@@ -154,7 +153,7 @@ fn main() {
         write!(&mut stderr, "{}", object.stderr).unwrap();
     }
     else {
-        let encoded = json::encode(&object).unwrap();
+        let encoded = serde_json::to_string(&object).unwrap();
         println!("{}", encoded);
     }
 }
